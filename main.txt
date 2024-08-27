@@ -1,3 +1,82 @@
-Hi Madhav Mohan!!
-Make Rebase Commit
-Git Fetch Learn
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include <cstring>
+#include <thread>
+using namespace std;
+
+class String{
+  char *str;
+  int size;
+  public:
+    String(const char* str){ // Param Const
+        cout<<"\nIn Paramet Constr\n";
+        size = strlen(str); // '\0'
+        this->str = (char*)malloc((size+1)*sizeof(char)); // new char[n+1]
+        strcpy(this->str, str);
+    }
+    
+    String(const String& obj){ // deep copy const
+        cout<<"\nIn Deep copy Constr\n";
+        size = strlen(obj.str); // '\0'
+        str = (char*)malloc((size+1)*sizeof(char)); // new char[n+1]
+        strcpy(this->str, obj.str); // 2nd arg const
+    }
+    
+    
+    String(){cout<<"\nDefault Constr\n";}
+    
+    String(String && obj){ // move const
+        cout<<"\nIn Move Constr\n";
+        size = obj.size;
+        str = (char*)malloc((size+1)*sizeof(char));
+        str = obj.str;
+        obj.str = nullptr; //NULL
+        obj.size = 0;
+    }
+    
+    String& operator=(String&& obj){
+        cout<<"\nIn Move Assign Operat\n";
+        size = obj.size+1;
+        str = (char*)malloc((size+1)*sizeof(char));
+        str = obj.str;
+        obj.str = nullptr;
+        obj.size = 0;
+        return *this;
+    }
+    
+    void modifyStr(const char* str){
+        free(this->str);
+        size = strlen(str);
+        this->str = (char*)malloc((size+1)*sizeof(char));
+        strcpy(this->str, str);
+    }
+    
+    void display(){
+        cout<<str<<endl;
+    }
+    
+    ~String(){
+        cout<<"\nIn Destructr\n";
+        free(str);
+    }
+    
+};
+
+
+int main(){
+    String str("Madhav"); // Parameterized Const
+    String str1 = str; // Deep Copy Const
+    str.display();
+    str1.display();
+    
+    str1.modifyStr("Mukund"); 
+    str1.display();
+    str.display();
+    
+    String str2(move(str)); // Move Constr
+    str2.display();
+    
+    String str3;
+    str3 = move(str1); // Move Assign
+    str3.display();
+}
